@@ -13,27 +13,25 @@
 
 <style>
 
-/* Page layout */
 html,body{
 margin:0;
 padding:0;
+height:100%;
+width:100%;
 background:#2c2c2c;
-height:100vh;
-width:100vw;
-overflow:hidden;
 display:flex;
 justify-content:center;
 align-items:center;
+overflow:hidden;
 }
 
 /* Flipbook container */
 #book{
 width:100vw;
 height:100vh;
-max-width:1200px;
 }
 
-/* Individual page */
+/* Pages */
 .page{
 background:white;
 display:flex;
@@ -41,10 +39,11 @@ justify-content:center;
 align-items:center;
 }
 
-/* PDF canvas */
+/* Canvas */
 canvas{
 width:100%;
 height:100%;
+object-fit:contain;
 }
 
 </style>
@@ -62,18 +61,28 @@ pdfjsLib.GlobalWorkerOptions.workerSrc =
 
 const pdfUrl = "magazine.pdf";
 
+/* Detect mobile */
+const isMobile = window.innerWidth < 768;
+
 const pageFlip = new St.PageFlip(
 document.getElementById("book"),
 {
-width:550,
-height:750,
-size:"stretch",
-minWidth:300,
-maxWidth:1000,
-minHeight:400,
-maxHeight:1500,
+width: window.innerWidth,
+height: window.innerHeight,
+
+size: "stretch",
+
+minWidth: 300,
+maxWidth: 2000,
+
+minHeight: 400,
+maxHeight: 2000,
+
 showCover:true,
-mobileScrollSupport:false
+
+mobileScrollSupport:false,
+
+usePortrait:isMobile
 }
 );
 
@@ -115,4 +124,5 @@ pageFlip.loadFromHTML(pages);
 </script>
 
 </body>
+
 </html>
