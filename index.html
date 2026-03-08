@@ -2,6 +2,9 @@
 <html>
 <head>
 
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Insperia Magazine</title>
 
 <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.min.js"></script>
@@ -9,20 +12,27 @@
 
 <style>
 
-body{
+/* Prevent mobile scroll */
+html,body{
+margin:0;
+padding:0;
+overflow:hidden;
+touch-action:none;
 background:#2c2c2c;
 display:flex;
 justify-content:center;
 align-items:center;
 height:100vh;
-margin:0;
 }
 
+/* Flipbook container */
 #book{
-width:900px;
-height:600px;
+width:90vw;
+height:90vh;
+max-width:900px;
 }
 
+/* Page style */
 .page{
 background:white;
 display:flex;
@@ -30,6 +40,7 @@ justify-content:center;
 align-items:center;
 }
 
+/* Canvas for PDF pages */
 canvas{
 width:100%;
 height:100%;
@@ -45,11 +56,14 @@ height:100%;
 
 <script>
 
+/* PDF worker */
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
+/* PDF file */
 const pdfUrl = "magazine.pdf";
 
+/* Create flipbook */
 const pageFlip = new St.PageFlip(
 document.getElementById("book"),
 {
@@ -58,10 +72,11 @@ height:600,
 size:"stretch",
 maxShadowOpacity:0.5,
 showCover:true,
-mobileScrollSupport:true
+mobileScrollSupport:false
 }
 );
 
+/* Load PDF */
 pdfjsLib.getDocument(pdfUrl).promise.then(pdf=>{
 
 let pages=[];
@@ -93,6 +108,7 @@ viewport:viewport
 
 }
 
+/* Load pages into flipbook */
 pageFlip.loadFromHTML(pages);
 
 });
