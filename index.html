@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta charset="UTF-8">
@@ -12,27 +13,27 @@
 
 <style>
 
-/* Prevent mobile scroll */
+/* Page layout */
 html,body{
 margin:0;
 padding:0;
-overflow:hidden;
-touch-action:none;
 background:#2c2c2c;
+height:100vh;
+width:100vw;
+overflow:hidden;
 display:flex;
 justify-content:center;
 align-items:center;
-height:100vh;
 }
 
 /* Flipbook container */
 #book{
-width:90vw;
-height:90vh;
-max-width:900px;
+width:100vw;
+height:100vh;
+max-width:1200px;
 }
 
-/* Page style */
+/* Individual page */
 .page{
 background:white;
 display:flex;
@@ -40,7 +41,7 @@ justify-content:center;
 align-items:center;
 }
 
-/* Canvas for PDF pages */
+/* PDF canvas */
 canvas{
 width:100%;
 height:100%;
@@ -56,27 +57,26 @@ height:100%;
 
 <script>
 
-/* PDF worker */
 pdfjsLib.GlobalWorkerOptions.workerSrc =
 "https://cdn.jsdelivr.net/npm/pdfjs-dist@3.4.120/build/pdf.worker.min.js";
 
-/* PDF file */
 const pdfUrl = "magazine.pdf";
 
-/* Create flipbook */
 const pageFlip = new St.PageFlip(
 document.getElementById("book"),
 {
-width:450,
-height:600,
+width:550,
+height:750,
 size:"stretch",
-maxShadowOpacity:0.5,
+minWidth:300,
+maxWidth:1000,
+minHeight:400,
+maxHeight:1500,
 showCover:true,
 mobileScrollSupport:false
 }
 );
 
-/* Load PDF */
 pdfjsLib.getDocument(pdfUrl).promise.then(pdf=>{
 
 let pages=[];
@@ -94,7 +94,7 @@ pages.push(div);
 
 pdf.getPage(i).then(page=>{
 
-let viewport=page.getViewport({scale:1.5});
+let viewport=page.getViewport({scale:2});
 
 canvas.height=viewport.height;
 canvas.width=viewport.width;
@@ -108,7 +108,6 @@ viewport:viewport
 
 }
 
-/* Load pages into flipbook */
 pageFlip.loadFromHTML(pages);
 
 });
